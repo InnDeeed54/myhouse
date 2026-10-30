@@ -1,0 +1,75 @@
+<?php
+    session_start();
+    include('config.php');
+    if (isset($_POST['register'])) {
+        $username = $_POST['username'];
+        $email = $_POST['email'];
+        $phone = $_POST['phone']; // Получаем телефон
+        $password = $_POST['password'];
+        $password_confirm = $_POST['password_confirm'];
+
+        if ($password !== $password_confirm) {
+            echo '<p class="error">Пароли не совпадают! Введите пароль снова.</p>';
+        } else {
+            $password_hash = password_hash($password, PASSWORD_BCRYPT);
+            
+            // Проверяем, нет ли уже такого email
+            $query = $connection->prepare("SELECT * FROM users WHERE email=:email");
+            $query->bindParam("email", $email, PDO::PARAM_STR);
+            $query->execute();
+            
+            if ($query->rowCount() > 0) {
+                echo '<p class="error">Этот адрес уже зарегистрирован!</p>';
+            }
+            if ($query->rowCount() == 0) {
+                // Добавляем :phone в SQL-запрос
+                $query = $connection->prepare("INSERT INTO users(username,password,email,phone) VALUES (:username,:password_hash,:email,:phone)");
+                $query->bindParam("username", $username, PDO::PARAM_STR);
+                $query->bindParam("password_hash", $password_hash, PDO::PARAM_STR);
+                $query->bindParam("email", $email, PDO::PARAM_STR);
+                $query->bindParam("phone", $phone, PDO::PARAM_STR); // Привязываем телефон
+                $result = $query->execute();
+                if ($result) {
+                    echo '<p class="success">Регистрация прошла успешно!</p>';
+                } else {
+                    echo '<p class="error">Неверные данные!</p>';
+                }
+            }
+        }
+    }
+?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Регистрация</h1>
+    <form method="post" action="" name="signup-form">
+        <div class="form-element">
+            <label>Username</label>
+            <input type="text" name="username" pattern="[a-zA-Z0-9]+" required />
+        </div>
+        <div class="form-element">
+            <label>Email</label>
+            <input type="email" name="email" required />
+        </div>
+        <!-- Новое поле для телефона -->
+        <div class="form-element">
+            <label>Phone</label>
+            <input type="tel" name="phone" placeholder="+7 (999) 123-45-67" required />
+        </div>
+        <div class="form-element">
+            <label>Password</label>
+            <input type="password" name="password" required />
+        </div>
+        <div class="form-element">
+            <label>Confirm Pass</label>
+            <input type="password" name="password_confirm" required />
+        </div>
+        <button type="submit" name="register" value="register">Register</button>
+    </form>
+</body>
+</html>

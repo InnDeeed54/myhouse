@@ -1,0 +1,144 @@
+<?php
+require_once __DIR__ . '/config.php';
+
+$results = [];
+$searched = false;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search_submit'])) {
+    $searched = true;
+    $criteria = $_POST['criteria'] ?? '';
+    $search_value = trim($_POST['search_value'] ?? '');
+
+    // Базовый SQL запрос с объединением всех таблиц (JOIN)
+    $sql = "SELECT h.*, d.name AS district_name, e.first_name, e.last_name, e.phone AS emp_phone 
+            FROM houses h
+            LEFT JOIN districts d ON h.district_id = d.id
+            LEFT JOIN employees e ON h.employee_id = e.id
+            WHERE 1=1";
+
+    // Массив параметров для безопасного PDO-запроса
+    $params = [];
+
+    if ($search_value !== '') {
+        if ($criteria === 'district') {
+            $sql .= " AND d.name LIKE :search";
+            $params['search'] = '%' . $search_value . '%';
+        } elseif ($criteria === 'employee') {
+            $sql .= " AND (e.last_name LIKE :search OR e.first_name LIKE :search)";
+            $params['search'] = '%' . $search_value . '%';
+        } elseif ($criteria === 'roof') {
+            $sql .= " AND h.roof_type = :search";
+            $params['search'] = $search_value; // Для ENUM точное совпадение (gable, hip, flat)
+        } elseif ($criteria === 'floors') {
+            $sql .= " AND h.floors = :search";
+            $params['search'] = intval($search_value);
+        }
+    }
+
+    $stmt = $connection->prepare($sql);
+    $stmt->execute($params);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск проектов — MyHouse.ru</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background-color: #f9f9f9; color: #333; }
+        h1, h2 { color: #2c3e50; }
+        form { background: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1); max-width: 500px; margin-bottom: 30px; }
+        .form-element { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        select, input[type="text"] { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        button { background: #27ae60; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #219152; }
+        table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #2c3e50; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .no-results { color: #c0392b; font-weight: bold; }
+        .hint { font-size: 12px; color: #7f8c8d; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>Панель поиска MyHouse.ru</h1>
+    
+    <form method="post" action="search.php">
+        <div class="form-element">
+            <label for="criteria">Критерий поиска:</label>
+            <select id="criteria" name="criteria">
+                <option value="district">Район города</option>
+                <option value="employee">Фамилия/Имя сотрудника</option>
+                <option value="roof">Тип крыши (gable, hip, flat)</option>
+                <option value="floors">Количество этажей</option>
+            </select>
+        </div>
+
+        <div class="form-element">
+            <label for="search_value">Введите поисковый запрос:</label>
+            <input type="text" id="search_value" name="search_value" required placeholder="Например: Лесной или gable">
+            <div class="hint">Для поиска по крыше вводите техническое имя: <b>gable</b> (двускатная), <b>hip</b> (вальмовая), <b>flat</b> (плоская).</div>
+        </div>
+
+        <button type="submit" name="search_submit">Найти объекты</button>
+    </form>
+
+    <?php if ($searched): ?>
+        <h2>Результаты поиска</h2>
+        <p>Найдено вариантов: <strong><?= count($results) ?></strong></p>
+
+        <?php if (count($results) > 0): ?>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название проекта</th>
+                        <th>Этажей</th>
+                        <th>Окон</th>
+                        <th>Крыша</th>
+                        <th>Материал</th>
+                        <th>Мансарда</th>
+                        <th>Отделка</th>
+                        <th>Площадь</th>
+                        <th>Цена</th>
+                        <th>Район</th>
+                        <th>Продавец (Сотрудник)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($results as $row): ?>
+                        <?php 
+                            // Переводим типы крыш и материалов для красоты в таблице
+                            $roofs = ['gable' => 'Двускатная', 'hip' => 'Вальмовая', 'flat' => 'Плоская'];
+                            $materials = ['brick' => 'Кирпич', 'aerated' => 'Газобетон', 'wood' => 'Дерево', 'frame' => 'Каркас'];
+                        ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['title']) ?></td>
+                            <td><?= htmlspecialchars($row['floors']) ?></td>
+                            <td><?= htmlspecialchars($row['windows']) ?></td>
+                            <td><?= $roofs[$row['roof_type']] ?? $row['roof_type'] ?></td>
+                            <td><?= $materials[$row['wall_material']] ?? $row['wall_material'] ?></td>
+                            <td><?= $row['has_attic'] ? 'Да' : 'Нет' ?></td>
+                            <td><?= $row['has_finishing'] ? 'Да' : 'Нет' ?></td>
+                            <td><?= htmlspecialchars($row['area']) ?> м²</td>
+                            <td><?= number_format($row['price'], 0, '.', ' ') ?> ₽</td>
+                            <td><?= htmlspecialchars($row['district_name'] ?? 'Не указан') ?></td>
+                            <td>
+                                <?= htmlspecialchars($row['first_name'] . ' ' . $row['last_name']) ?><br>
+                                <small style="color:#555;"><?= htmlspecialchars($row['emp_phone']) ?></small>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p class="no-results">По вашему запросу ничего не найдено. Попробуйте изменить параметры.</p>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <p><br><a href="index.html">На главную страницу сайта</a></p>
+</body>
+</html>

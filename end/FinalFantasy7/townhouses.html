@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyHouse.ru — Проекты таунхаусов</title>
+
+    <link rel="stylesheet" href="final.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        #menudown,
+        #menudown ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        /* Горизонтальное меню */
+        #menudown {
+            display: flex;
+            width: 100%;
+            background: #E8F0F4;
+        }
+
+        #menudown > li {
+            position: relative;
+            flex: 1;
+            background: #E8F0F4;
+            border-right: 1px solid #fff;
+        }
+
+        #menudown li {
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        #menudown li a {
+            display: block;
+            padding: 16px;
+            color: #2F4858;
+            text-decoration: none;
+        }
+
+        #menudown li a:hover {
+            color: #fff;
+            background: #496A81;
+        }
+
+        /* Выпадающие подменю */
+        #menudown ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 220px;
+            z-index: 1000;
+            background: #E8F0F4;
+        }
+
+        #menudown ul li {
+            width: 100%;
+            border-bottom: 1px solid #fff;
+        }
+
+        /* Вложенное подменю открывается сбоку */
+        #menudown ul ul {
+            top: 0;
+            left: 100%;
+        }
+
+        @media (max-width: 700px) {
+            #menudown {
+                flex-direction: column;
+            }
+
+            #menudown ul,
+            #menudown ul ul {
+                position: static;
+                width: 100%;
+                padding-left: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header></header>
+
+        <nav class="top-menu" aria-label="Каталог проектов">
+            <ul id="menudown">
+                <li>
+                    <a href="#">По типу дома →</a>
+                    <ul>
+                        <li><a href="townhouses.html">Таунхаусы и блокированные дома</a></li>
+                        <li><a href="#">Дома на две семьи</a></li>
+                        <li><a href="#">Узкие дома</a></li>
+                        <li><a href="#">Бани</a></li>
+                        <li><a href="#">Садовые участки</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">По материалу →</a>
+                    <ul>
+                        <li><a href="#">Кирпичные дома</a></li>
+                        <li><a href="#">Дома из газобетона и пенобетона</a></li>
+                        <li>
+                            <a href="#">Деревянные дома →</a>
+                            <ul>
+                                <li><a href="#">Дома из бруса</a></li>
+                                <li><a href="#">Дома из бревна</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Каркасные дома</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">По площади →</a>
+                    <ul>
+                        <li><a href="#">До 150 м²</a></li>
+                        <li><a href="#">От 150 до 250 м²</a></li>
+                        <li><a href="#">От 250 до 400 м²</a></li>
+                        <li><a href="#">От 400 м²</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="logo_myhouse.gif" alt="На главную">
+                    </a>
+                </div>
+
+                <p><a href="#" class="order-link">Заказать проект</a></p>
+            </aside>
+
+            <main class="main-content">
+                <h1>Проекты таунхаусов и блокированных домов</h1>
+
+                <p>
+                    В этом разделе каталога представлены архитектурные проекты
+                    таунхаусов и загородных домов с возможностью пристройки
+                    или блокировки.
+                </p>
+
+                <div class="cards-grid">
+                    <article class="card">
+                        <img src="house1.jpg" alt="Проект D-152-1D">
+                        <h3>Проект D-152-1D</h3>
+                        <p>Архитектурный проект дома из бруса. Небольшой, но очень уютный.</p>
+                        <div class="details">
+                            <p><b>Площадь:</b> 154,5 м²</p>
+                            <p><b>Стены:</b> дерево</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <img src="house2.jpg" alt="Проект Н-173-1Р">
+                        <h3>Проект Н-173-1Р</h3>
+                        <p>Двухэтажный дом с двускатной кровлей.</p>
+                        <div class="details">
+                            <p><b>Площадь:</b> 173,2 м²</p>
+                            <p><b>Стены:</b> пенобетон</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <img src="house3.jpg" alt="Проект V-208-1P">
+                        <h3>Проект V-208-1P</h3>
+                        <p>Уютный дом для всей семьи, подходящий для города и дачи.</p>
+                        <div class="details">
+                            <p><b>Площадь:</b> 207,8 м²</p>
+                            <p><b>Стены:</b> пенобетон</p>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <img src="house4.jpg" alt="Проект R-280-1D">
+                        <h3>Проект R-280-1D</h3>
+                        <p>Деревянный дом из бруса с гаражом на один автомобиль.</p>
+                        <div class="details">
+                            <p><b>Площадь:</b> 278 м²</p>
+                            <p><b>Стены:</b> дерево</p>
+                        </div>
+                    </article>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $('#menudown li').hover(
+                function () {
+                    $(this).children('ul')
+                        .stop(true, true)
+                        .slideDown(150);
+                },
+                function () {
+                    $(this).children('ul')
+                        .stop(true, true)
+                        .slideUp(150);
+                }
+            );
+        });
+    </script>
+
+</body>
+</html>
