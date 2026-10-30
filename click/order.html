@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyHouse.ru — Заказать проект</title>
+
+    <link rel="stylesheet" href="final.css">
+
+    <style>
+        .order-page {
+            box-sizing: border-box;
+            max-width: 1200px;
+            min-height: 100vh;
+            margin: 0 auto;
+            padding: 30px 20px;
+            background: url("fon9.jpg") center / cover no-repeat;
+        }
+
+        .order-form {
+            max-width: 520px;
+            margin: 24px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+
+        .order-form > label:not(.choice):not(.checkbox-row) {
+            display: block;
+            margin: 14px 0 6px;
+            font-weight: 600;
+        }
+
+        .order-form select {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 9px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            background: #fff;
+            font: inherit;
+        }
+
+        .order-form fieldset {
+            margin: 16px 0;
+            padding: 10px 12px;
+            border: 1px solid #bbb;
+            border-radius: 5px;
+        }
+
+        .order-form legend {
+            padding: 0 5px;
+            font-weight: 600;
+        }
+
+        .choice,
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 9px 0;
+            font-weight: 400;
+            cursor: pointer;
+        }
+
+        .choice input,
+        .checkbox-row input {
+            width: 18px;
+            height: 18px;
+            margin: 0;
+            accent-color: #287a3d;
+            cursor: pointer;
+        }
+
+        .price-box {
+            margin: 20px 0;
+            font-size: 18px;
+        }
+
+        .submit-order {
+            padding: 11px 18px;
+            border: 0;
+            border-radius: 5px;
+            background: #287a3d;
+            color: white;
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .submit-order:hover {
+            background: #206331;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .order-page {
+                padding: 20px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header></header>
+
+        <main class="order-page">
+            <a class="back-link" href="index.html">← Вернуться в каталог</a>
+
+            <section class="order-section">
+                <h1>Заказать проект дома</h1>
+
+                <form class="order-form" id="orderForm">
+                    <label for="floors">Количество этажей</label>
+                    <select id="floors" name="floors" required>
+                        <option value="1" selected>1 этаж</option>
+                        <option value="2">2 этажа</option>
+                        <option value="3">3 этажа</option>
+                    </select>
+
+                    <label for="windows">Количество окон</label>
+                    <select id="windows" name="windows" required>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8" selected>8</option>
+                    </select>
+
+                    <fieldset>
+                        <legend>Тип крыши</legend>
+
+                        <label class="choice">
+                            <input type="radio" name="roof" value="gable" checked>
+                            <span>Двускатная</span>
+                        </label>
+
+                        <label class="choice">
+                            <input type="radio" name="roof" value="hip">
+                            <span>Вальмовая</span>
+                        </label>
+
+                        <label class="choice">
+                            <input type="radio" name="roof" value="flat">
+                            <span>Плоская</span>
+                        </label>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend>Материал стен</legend>
+
+                        <label class="choice">
+                            <input type="radio" name="walls" value="brick" checked>
+                            <span>Кирпич</span>
+                        </label>
+
+                        <label class="choice">
+                            <input type="radio" name="walls" value="aerated">
+                            <span>Газобетон</span>
+                        </label>
+
+                        <label class="choice">
+                            <input type="radio" name="walls" value="wood">
+                            <span>Дерево</span>
+                        </label>
+
+                        <label class="choice">
+                            <input type="radio" name="walls" value="frame">
+                            <span>Каркас</span>
+                        </label>
+                    </fieldset>
+
+                    <label class="checkbox-row">
+                        <input id="attic" name="attic" type="checkbox">
+                        <span>Добавить мансарду</span>
+                    </label>
+
+                    <label class="checkbox-row">
+                        <input id="finishing" name="finishing" type="checkbox">
+                        <span>Чистовая отделка</span>
+                    </label>
+
+                    <div class="price-box">
+                        Примерная стоимость:
+                        <strong id="totalPrice">0 ₽</strong>
+                    </div>
+
+                    <button class="submit-order" type="submit">
+                        Оформить заказ
+                    </button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const form = document.getElementById('orderForm');
+        const totalPrice = document.getElementById('totalPrice');
+
+        const prices = {
+            floor: 1500000,
+            window: 25000,
+            roof: {
+                gable: 300000,
+                hip: 400000,
+                flat: 250000
+            },
+            walls: {
+                brick: 1200000,
+                aerated: 850000,
+                wood: 1000000,
+                frame: 700000
+            },
+            attic: 500000,
+            finishing: 750000
+        };
+
+        function calculatePrice() {
+            const floors = Number(form.elements.floors.value);
+            const windows = Number(form.elements.windows.value);
+            const selectedRoof = form.querySelector('input[name="roof"]:checked');
+            const selectedWalls = form.querySelector('input[name="walls"]:checked');
+
+            let total =
+                floors * prices.floor +
+                windows * prices.window +
+                prices.roof[selectedRoof.value] +
+                prices.walls[selectedWalls.value];
+
+            if (form.elements.attic.checked) {
+                total += prices.attic;
+            }
+
+            if (form.elements.finishing.checked) {
+                total += prices.finishing;
+            }
+
+            totalPrice.textContent =
+                new Intl.NumberFormat('ru-RU').format(total) + ' ₽';
+        }
+
+        form.addEventListener('input', calculatePrice);
+        form.addEventListener('change', calculatePrice);
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            alert('Заявка оформлена! Примерная стоимость: ' + totalPrice.textContent);
+        });
+
+        calculatePrice();
+    </script>
+
+</body>
+</html>

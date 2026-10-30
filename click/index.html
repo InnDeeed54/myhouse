@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyHouse.ru — Каталог проектов</title>
+
+    <link rel="stylesheet" href="final.css">
+    <script src="https://jquery.com"></script>
+
+    <style>
+        #menudown,
+        #menudown ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        #menudown {
+            display: flex;
+            width: 100%;
+            background: #E8F0F4;
+        }
+
+        #menudown > li {
+            position: relative;
+            flex: 1;
+            background: #E8F0F4;
+            border-right: 1px solid #fff;
+        }
+
+        #menudown li {
+            position: relative;
+        }
+
+        #menudown li a {
+            display: block;
+            padding: 16px;
+            color: #2F4858;
+            text-decoration: none;
+        }
+
+        #menudown li a:hover {
+            color: #fff;
+            background: #496A81;
+        }
+
+        #menudown ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 220px;
+            z-index: 1000;
+            background: #E8F0F4;
+        }
+
+        #menudown ul ul {
+            top: 0;
+            left: 100%;
+        }
+
+        #menudown ul li {
+            width: 100%;
+            border-bottom: 1px solid #fff;
+        }
+
+        header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            min-height: 60px;
+            padding: 10px 16px;
+            box-sizing: border-box;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .header-link {
+            display: inline-block;
+            padding: 10px 16px;
+            border-radius: 4px;
+            color: #2F4858;
+            background: #E8F0F4;
+            text-decoration: none;
+        }
+
+        .header-link:hover {
+            color: #fff;
+            background: #496A81;
+        }
+
+        .register-link {
+            color: #fff;
+            background: #496A81;
+        }
+
+        .register-link:hover {
+            background: #203746;
+        }
+
+        .user-welcome-text {
+            font-family: sans-serif;
+            font-size: 15px;
+            color: #2F4858;
+        }
+
+        @media (max-width: 700px) {
+            #menudown {
+                flex-direction: column;
+            }
+
+            #menudown ul,
+            #menudown ul ul {
+                position: static;
+                width: 100%;
+                padding-left: 12px;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="header-actions">
+                <!-- Обернули гостевые кнопки в один блок, чтобы с гарантией скрыть их целиком -->
+                <div id="guest-actions" style="display: flex; gap: 10px;">
+                    <a class="header-link" href="login.php">Войти</a>
+                    <a class="header-link register-link" href="register.php">Регистрация</a>
+                </div>
+                
+                <!-- Блок для авторизованного пользователя -->
+                <div id="user-actions" style="display: none; align-items: center; gap: 10px;">
+                    <span id="user-info-area" class="user-welcome-text"></span>
+                </div>
+                
+                <a class="header-link" href="search.php">Посмотреть БД</a>
+            </div>
+        </header>
+
+        <nav class="top-menu" aria-label="Каталог проектов">
+            <ul id="menudown">
+                <li>
+                    <a href="#">По типу дома →</a>
+                    <ul>
+                        <li><a href="townhouses.html">Таунхаусы и блокированные дома</a></li>
+                        <li><a href="#">Дома на две семьи</a></li>
+                        <li><a href="#">Узкие дома</a></li>
+                        <li><a href="#">Бани</a></li>
+                        <li><a href="#">Садовые участки</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">По материалу →</a>
+                    <ul>
+                        <li><a href="#">Кирпичные дома</a></li>
+                        <li><a href="#">Дома из газобетона и пенобетона</a></li>
+                        <li>
+                            <a href="#">Деревянные дома →</a>
+                            <ul>
+                                <li><a href="#">Дома из бруса</a></li>
+                                <li><a href="#">Дома из бревна</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Каркасные дома</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">По площади →</a>
+                    <ul>
+                        <li><a href="#">До 150 м²</a></li>
+                        <li><a href="#">От 150 до 250 м²</a></li>
+                        <li><a href="#">От 250 до 400 м²</a></li>
+                        <li><a href="#">От 400 м²</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="layout">
+            <aside class="sidebar">
+                <div class="logo">
+                    <img src="logo_myhouse.gif" alt="Логотип MyHouse">
+                </div>
+
+                <p><a href="order.html" class="order-link">Заказать проект</a></p>
+            </aside>
+
+            <main class="main-content">
+                <h1>Каталог архитектурных проектов</h1>
+                <h2>ПРОЕКТЫ ДЛЯ ВАШЕГО БУДУЩЕГО ДОМА</h2>
+
+                <p>
+                    Каталог готовых архитектурных проектов коттеджей MyHouse.ru —
+                    результат многолетней работы специалистов в области архитектуры
+                    и строительства. Здесь собраны проекты загородных домов,
+                    разработанные с учётом потребностей будущих владельцев.
+                    Более 95% проектов реализовано в строительстве в Московской
+                    области, по всей России и в странах ближнего зарубежья.
+                </p>
+
+                <div class="gallery">
+                    <img src="house1.jpg" alt="Проект дома 1" class="pos-1">
+                    <img src="house2.jpg" alt="Проект дома 2" class="pos-2">
+                    <img src="house3.jpg" alt="Проект дома 3" class="pos-3">
+                    <img src="house4.jpg" alt="Проект дома 4" class="pos-4">
+                    <img src="house5.jpg" alt="Проект дома 5" class="pos-5">
+                    <img src="house6.jpg" alt="Проект дома 6" class="pos-6">
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            // Твой оригинальный код выпадающего меню
+            $('#menudown li').hover(
+                function () {
+                    $(this).children('ul').stop(true, true).slideDown(150);
+                },
+                function () {
+                    $(this).children('ul').stop(true, true).slideUp(150);
+                }
+            );
+
+            // Безопасный AJAX-запрос
+            $.getJSON('check-auth.php', function (data) {
+                if (data.authorized) {
+                    // НАДЁЖНО СКРЫВАЕМ КНОПКИ "Войти" и "Регистрация" разом
+                    $('#guest-actions').hide();
+
+                    // Строим панель личного кабинета
+                    var welcomeHtml = 'Вы вошли как: <strong>' + data.username + '</strong>';
+                    
+                    if (data.role === 'admin') {
+                        welcomeHtml += ' (Администратор) | <a class="header-link" href="admin.php" style="color: red; font-weight: bold;">Админка</a>';
+                    }
+
+                    welcomeHtml += ' | <a class="header-link" href="orders.php">Личный кабинет</a>';
+                    welcomeHtml += ' | <a class="header-link" href="orders.php?action=logout" style="color: #ff4757;">Выйти</a>';
+
+                    // Выводим сгенерированные ссылки и показываем весь блок
+                    $('#user-info-area').html(welcomeHtml);
+                    $('#user-actions').css('display', 'flex');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

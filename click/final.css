@@ -1,0 +1,302 @@
+/* Общие сбросы и базовые стили */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    line-height: 1.5;
+}
+
+/* Контейнер для центрирования макета */
+.container {
+    max-width: 1100px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Шапка сайта */
+header {
+    width: 100%;
+    height: 180px;
+    background-color: fon9.jpg; /* Замените на фоновое изображение */
+    background-image: url('shapka_div.jpg'); /* Путь к картинке шапки */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+
+/* --- Сетка для 4 карточек (2 колонки, 2 строки) --- */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Две равные колонки */
+    gap: 20px; /* Расстояние между карточками */
+    margin-top: 20px;
+}
+
+/* --- Стиль самой карточки --- */
+.card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    background-color: #fafafa;
+    text-align: center; /* Центрируем заголовки и картинки */
+}
+
+/* --- Картинка внутри карточки --- */
+.card img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    display: block;
+}
+
+/* --- Заголовок карточки --- */
+.card h3 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+/* --- Описание под картинкой --- */
+.card p {
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: #666;
+    text-align: center; /* Текст описания по центру */
+}
+
+/* --- Блок с деталями (Площадь, Стены) --- */
+.card .details {
+    font-size: 12px;
+    color: #333;
+    text-align: left; /* Детали выравниваем по левому краю */
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.card .details p {
+    text-align: left; /* Отменяем центрирование для строк с деталями */
+    margin-bottom: 5px;
+}
+/* Основной макет (Сайдбар + Контент) */
+.layout {
+    display: flex;
+    min-height: 600px;
+}
+
+/* Левый сайдбар */
+.sidebar {
+    width: 260px;
+    background-color: #d9f0f5; /* Светло-голубой фон как на макете */
+    padding: 20px;
+    border-right: 1px solid #b0d4db;
+}
+
+/* Стили логотипа */
+.logo {
+    margin-bottom: 20px;
+}
+
+.logo a {
+    text-decoration: none;
+    color: #d35400;
+    font-size: 22px;
+    font-weight: bold;
+    display: block;
+}
+
+.logo span {
+    color: #555;
+    font-size: 12px;
+    display: block;
+    text-transform: uppercase;
+}
+
+/* Ссылки и списки в сайдбаре */
+.sidebar a {
+    color: #cc0000;
+    text-decoration: none;
+}
+
+.sidebar a.order-link {
+    color: #0056b3;
+}
+
+.sidebar a:hover {
+    text-decoration: underline;
+}
+
+/* Требование: При наведении на ссылку "Проекты таунхаусов..." меняется цвет */
+.townhouse-link:hover {
+    color: #0056b3 !important;
+    text-decoration: none;
+}
+
+.sidebar h3 {
+    font-size: 16px;
+    margin: 15px 0 10px 0;
+    color: #cc0000;
+}
+
+/* --- Настройка списков в сайдбаре --- */
+.sidebar ul, .sidebar ol {
+    list-style: none; /* 1. Убираем стандартные цифры и точки */
+    padding-left: 0;  /* Убираем отступ слева */
+    margin-left: 0;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.sidebar li {
+    margin-bottom: 5px;
+}
+
+/* --- Создаем свои кликабельные маркеры для нумерованного списка (ol) --- */
+.sidebar ol {
+    counter-reset: item; /* Инициализируем счетчик */
+}
+
+.sidebar ol li a::before {
+    counter-increment: item; /* Увеличиваем счетчик для каждого пункта */
+    content: counter(item) ". "; /* Выводим цифру с точкой перед текстом */
+}
+
+/* --- Создаем свои кликабельные маркеры для маркированного списка (ul) --- */
+.sidebar ul li a::before {
+    content: "• "; /* Выводим точку перед текстом */
+}
+
+/* Правая часть с контентом */
+/* --- Единый фон для всей правой части контента --- */
+.main-content {
+    flex: 1;
+    padding: 30px;
+    color: #0056b3;
+    
+    /* Единая фоновая картинка для всего блока */
+    background-image: url('fon9.jpg'); /* Путь к вашей единой фоновой картинке */
+    background-size: cover;       /* Картинка растягивается на весь блок */
+    background-position: center;  /* Центрируем картинку */
+    background-repeat: no-repeat; /* Отключаем повторение */
+}
+
+/* --- Заголовок (убираем у него отдельный фон) --- */
+.main-content h1 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #0056b3; /* blue текст, чтобы читался на фоне */
+    
+}
+/* --- Абзацы в правой части --- */
+.main-content p {
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: justify; /* Выравнивание по ширине */
+    hyphens: auto;       /* Автоматические переносы слов (для аккуратного текста) */
+}
+
+/* --- Галерея с эффектом "зигзаг" --- */
+.gallery {
+    position: relative; /* Контейнер для позиционирования */
+    width: 100%;
+    height: 600px; /* Высота контейнера подбирается под размер картинок */
+    margin-top: 20px;
+}
+
+.gallery img {
+    position: absolute; /* Абсолютное позиционирование для каждой картинки */
+    width: 35%; /* Примерная ширина картинки */
+    height: auto;
+    display: block;
+    border: 2px solid #ffffff; /* Белая рамка для наложения */
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3); /* Тень для объема */
+    z-index: 1; /* Базовый слой */
+}
+
+/* --- Позиции для каждой картинки (подбираются под ваш макет) --- */
+.gallery img.pos-1 {
+    top: 0;
+    left: 10%;
+    z-index: 1; /* Верхняя левая */
+}
+
+.gallery img.pos-2 {
+    top: 80px; /* Спуск вниз */
+    left: 35%;  /* Сдвиг вправо */
+    z-index: 2; /* Перекрывается первой */
+}
+
+.gallery img.pos-3 {
+    top: 150px;
+    left: 60%;
+    z-index: 3; /* Самая нижняя в ряду */
+}
+
+.gallery img.pos-4 {
+    top: 260px; /* Начало второго ряда */
+    left: 10%;
+    z-index: 1;
+}
+
+.gallery img.pos-5 {
+    top: 340px;
+    left: 35%;
+    z-index: 2;
+}
+
+.gallery img.pos-6 {
+    top: 430px; /* Поднимаем выше, как на образце */
+    left: 60%;
+    z-index: 3; /* Перекрывает пятую */
+}
+
+/* Сетка карточек для страницы таунхаусов */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    text-align: center;
+    background-color: #fafafa;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.card h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.card p {
+    font-size: 13px;
+    text-align: center;
+    margin-bottom: 8px;
+    color: #666;
+}
+
+.card .details {
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    text-align: left;
+    border-top: 1px solid #eee;
+    padding-top: 8px;
+    margin-top: 8px;
+}

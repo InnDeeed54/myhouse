@@ -1,0 +1,54 @@
+<?php
+    session_start();
+    include('config.php');
+    if (isset($_POST['login'])) {
+        $username = $_POST['username'];
+        $phone = $_POST['phone']; // Получаем введенный телефон
+        $password = $_POST['password'];
+        
+        // Ищем пользователя по его Username
+        $query = $connection->prepare("SELECT * FROM users WHERE username=:username");
+        $query->bindParam("username", $username, PDO::PARAM_STR);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_ASSOC);
+        
+        // Дополнительно проверяем, совпадает ли телефон из базы с тем, что ввел пользователь
+        if (!$result || $result['phone'] !== $phone) {
+            echo '<p class="error">Неверные данные пользователя!</p>';
+        } else {
+            if (password_verify($password, $result['password'])) {
+                $_SESSION['user_id'] = $result['id'];
+                echo '<p class="success">Поздравляем, вы прошли авторизацию!</p>';
+            } else {
+                echo '<p class="error"> Неверные данные пользователя!</p>';
+            }
+        }
+    }
+?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Вход</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Авторизация</h1>
+    <form method="post" action="" name="signin-form">
+      <div class="form-element">
+        <label>Username</label>
+        <input type="text" name="username" pattern="[a-zA-Z0-9]+" required />
+      </div>
+      <!-- Поле телефона для авторизации -->
+      <div class="form-element">
+        <label>Phone</label>
+        <input type="tel" name="phone" required />
+      </div>
+      <div class="form-element">
+        <label>Password</label>
+        <input type="password" name="password" required />
+      </div>
+      <button type="submit" name="login" value="login">Log In</button>
+    </form>
+</body>
+</html>
